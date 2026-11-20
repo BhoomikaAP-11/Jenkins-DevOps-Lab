@@ -1,3 +1,4 @@
+
 pipeline {
     agent any
 
@@ -6,14 +7,17 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Installing dependencies...'
-                sh 'python3 -m pip install -r requirements.txt'
+                sh '''
+                    python3 -m venv .venv
+                    .venv/bin/python -m pip install -r requirements.txt
+                '''
             }
         }
 
         stage('Test') {
             steps {
                 echo 'Running Unit Tests...'
-                sh 'python3 -m unittest discover -s tests -v'
+                sh '.venv/bin/python -m unittest discover -s tests -v'
             }
         }
 
